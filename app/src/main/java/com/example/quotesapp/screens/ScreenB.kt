@@ -20,6 +20,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,9 @@ import com.example.quotesapp.viewmodel.QuoteViewModel
 fun ScreenB(vm: QuoteViewModel, route: NavHostController) {
     val quotes by vm.quotes.collectAsStateWithLifecycle()
     val isLoading by vm.isLoading.collectAsStateWithLifecycle()
+    LaunchedEffect(key1 = Unit) {
+        vm.loadQuote()
+    }
     Scaffold (
         topBar = {
             TopAppBar(
@@ -56,6 +60,7 @@ fun ScreenB(vm: QuoteViewModel, route: NavHostController) {
         },
     ) {innerPadding->
         //val valie = innerPadding
+
         when{
             isLoading-> {
                 Box(modifier = Modifier.fillMaxSize().padding(innerPadding),
@@ -64,15 +69,8 @@ fun ScreenB(vm: QuoteViewModel, route: NavHostController) {
                     CircularProgressIndicator()
                 }
             }
-            quotes.isEmpty() ->{
-                Box(modifier = Modifier.fillMaxSize().padding(innerPadding),
-                    contentAlignment = Alignment.Center
-                ){
-                    Text("No quote available..")
-                }
-            }
-            else -> {
-                LazyColumn(
+        }
+        LazyColumn(
                     modifier = Modifier.padding(innerPadding) // Use innerPadding
                 ) {
                     items(quotes) { quote ->
@@ -80,8 +78,33 @@ fun ScreenB(vm: QuoteViewModel, route: NavHostController) {
                         HorizontalDivider(thickness = 0.5.dp, color = DividerDefaults.color)
                     }
                 }
-            }
-        }
+
+//        when{
+//            isLoading-> {
+//                Box(modifier = Modifier.fillMaxSize().padding(innerPadding),
+//                    contentAlignment = Alignment.Center
+//                ){
+//                    CircularProgressIndicator()
+//                }
+//            }
+//            quotes.isEmpty() ->{
+//                Box(modifier = Modifier.fillMaxSize().padding(innerPadding),
+//                    contentAlignment = Alignment.Center
+//                ){
+//                    Text("No quote available..")
+//                }
+//            }
+//            else -> {
+//                LazyColumn(
+//                    modifier = Modifier.padding(innerPadding) // Use innerPadding
+//                ) {
+//                    items(quotes) { quote ->
+//                        QuoteItem(quote)
+//                        HorizontalDivider(thickness = 0.5.dp, color = DividerDefaults.color)
+//                    }
+//                }
+//            }
+//        }
     }
 }
 

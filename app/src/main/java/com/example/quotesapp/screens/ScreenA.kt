@@ -2,6 +2,7 @@ package com.example.quotesapp.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
@@ -24,13 +25,13 @@ import com.example.quotesapp.viewmodel.QuoteViewModel
 fun ScreenA(vm: QuoteViewModel, route: NavHostController, ) {
     MyTopAppBar()
     Column(
-        modifier = Modifier,
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = {
             route.navigate(Screens.ScreenB.route)
-            vm.loadQuote()
+            //.vm.loadQuote()
         }) {
             Text(text = "Load Quotes")
         }
