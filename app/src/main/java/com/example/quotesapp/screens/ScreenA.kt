@@ -28,7 +28,10 @@ fun ScreenA(vm: QuoteViewModel, route: NavHostController, ) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Button(onClick = {route.navigate(Screens.ScreenB.route)}) {
+        Button(onClick = {
+            route.navigate(Screens.ScreenB.route)
+            vm.loadQuote()
+        }) {
             Text(text = "Load Quotes")
         }
     }
