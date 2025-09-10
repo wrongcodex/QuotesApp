@@ -2,9 +2,12 @@ package com.example.quotesapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.quotesapp.Result
 import com.example.quotesapp.model.DefaultQuoteRepository
+import com.example.quotesapp.model.MyQuoteRepository
 import com.example.quotesapp.model.Quote
 import com.example.quotesapp.model.QuoteRepository
+import com.example.quotesapp.model.RandomRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,12 +49,34 @@ import kotlinx.coroutines.launch
 
 
 class QuoteViewModel(
-    private val repository: QuoteRepository = DefaultQuoteRepository()
+    private val repository: QuoteRepository = DefaultQuoteRepository(),
+    //private val randomRepository: MyQuoteRepository
 ): ViewModel() {
     private val _quotes = MutableStateFlow<List<Quote>>(emptyList())
     val quotes: StateFlow<List<Quote>> = _quotes.asStateFlow()
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
+//    private val _randomQuote = MutableStateFlow<Quote?>(null)
+//    val randomQuote: StateFlow<Quote?> = _randomQuote.asStateFlow()
+//    fun loadRandomQuote(){
+//        viewModelScope.launch {
+//            randomRepository.fetchData().collect {result->
+//                when(result){
+//                    is Result.Error -> {
+//                        _isLoading.value = false
+//                    }
+//                    Result.Loading -> {
+//                        _isLoading.value = true
+//                    }
+//                    is Result.Success<Any> -> {
+//                        _randomQuote.value = result.data as? Quote
+//                        _isLoading.value = false
+//                    }
+//                }
+//            }
+//        }
+//    }
     fun loadQuote() {
         if (_isLoading.value) return
         viewModelScope.launch {
@@ -62,4 +87,5 @@ class QuoteViewModel(
         }
     }
     fun shuffle() = _quotes.update { it.shuffled() }
+
 }
