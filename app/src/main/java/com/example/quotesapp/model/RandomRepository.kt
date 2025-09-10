@@ -6,12 +6,18 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 interface RandomRepository{
-    suspend fun fetchData(): Flow<Result<Any>>
+    suspend fun fetchRandomQuote(): Flow<Result<Quote>>
 }
 class MyQuoteRepository: RandomRepository {
-    suspend override fun fetchData(): Flow<Result<Any>> = flow {
+    override suspend fun fetchRandomQuote(): Flow<Result<Quote>> = flow {
         emit(Result.Loading)
         delay(3000L)
-        emit(Result.Success(QuotesDataSource.quotesList.random()))
+        try {
+            val randomQuote = QuotesDataSource.quotesList.random()
+            emit(Result.Success(randomQuote))
+        }
+        catch (e: Exception){
+            emit(Result.Error("Failed To Fetch Quote!", e))
+        }
     }
 }
